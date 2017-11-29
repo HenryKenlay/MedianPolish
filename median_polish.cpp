@@ -19,15 +19,54 @@ int main(){
 }
 
 
-void median_polish(Array<double,Dynamic,Dynamic> z, double eps = 0.01, int maxiter = 10){
+void median_polish(Array<double,Dynamic,Dynamic> z, double eps = 0.01, int maxiter = 1){
     int nr = z.rows();
     int nc = z.cols();
     double t = 0.0;
     ArrayXd r = ArrayXd::Zero(nr);
     ArrayXd c = ArrayXd::Zero(nc);
     double oldsum = 0.0;
+    // other declarations
+    ArrayXd rdelta;
+    ArrayXd cdelta;
+    double delta;
+    double newsum;
+    bool converged = false;
+    bool verbose = true;
     for(int i = 0; i < maxiter; i++){
-        median_of_each_row(z);
+        rdelta = median_of_each_row(z);
+        for(int j = 0; j < nc; j++){
+            z.col(j) = z.col(j) - rdelta;
+        }
+        r = r + rdelta;
+        delta = median(c, 0, false);
+        c = c - delta;
+        t = t + delta;
+        cdelta = median_of_each_col(z);
+        for(int j = 0; j < nr; j++){
+            z.row(j) = z.row(j) - cdelta.transpose();
+        }
+        c = c + cdelta;
+        delta = median(r, 0, false);
+        r = r - delta;
+        t = t + delta;
+        newsum = z.abs().sum();
+        if ((newsum == 0) || (abs(newsum - oldsum) < eps*newsum)){
+            converged = true;
+            break;
+        } else{
+            oldsum = newsum;
+        }
+        if (verbose){
+            cout << i+1 << ": " << newsum << endl;
+        }
+    }
+    if (converged){
+        if (verbose){
+            cout << "Final: " << newsum << endl;
+        }
+    } else{
+        cerr << "Median polish did not converge in " << maxiter << " iterations" << endl;
     }
     return;
 }
