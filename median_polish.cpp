@@ -5,7 +5,7 @@
 using namespace std;
 using namespace Eigen;
 
-void median_polish(Array<double,Dynamic,Dynamic>, double, int);
+void median_polish(Array<double,Dynamic,Dynamic>, double, int, bool);
 ArrayXd median_of_each_row(Array<double,Dynamic,Dynamic> m);
 ArrayXd median_of_each_col(Array<double,Dynamic,Dynamic> m);
 double median(Array<double,Dynamic,Dynamic>, int, bool);
@@ -14,7 +14,7 @@ ArrayXXd read_array(string);
 
 int main(int argc, char** argv){
     if (argc < 2){
-        cout << "Example use of this program:" << endl;
+        cout << "Example use of this program:" << endl << endl;
         cout << "\t To calculate median polish on matrix stored in data/xyz:" << endl << endl;
         cout << "\t" << argv[0] << " 100_100 " << endl << endl;
         cout << "\t To read matrix stored in data/xyz but not calculate the median polish:" << endl << endl;
@@ -22,14 +22,14 @@ int main(int argc, char** argv){
     } else{
         ArrayXXd data = read_array(argv[1]);
         if (argc < 3){
-            median_polish(data, 0.01, 10);
+            median_polish(data, 0.01, 10, false);
         }
     }
     return(0);
 }
 
 
-void median_polish(Array<double,Dynamic,Dynamic> z, double eps = 0.01, int maxiter = 1){
+void median_polish(Array<double,Dynamic,Dynamic> z, double eps, int maxiter, bool verbose){
     int nr = z.rows();
     int nc = z.cols();
     double t = 0.0;
@@ -42,7 +42,6 @@ void median_polish(Array<double,Dynamic,Dynamic> z, double eps = 0.01, int maxit
     double delta;
     double newsum;
     bool converged = false;
-    bool verbose = true;
     for(int i = 0; i < maxiter; i++){
         rdelta = median_of_each_row(z);
         for(int j = 0; j < nc; j++){
