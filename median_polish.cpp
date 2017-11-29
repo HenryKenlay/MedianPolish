@@ -12,9 +12,19 @@ double median(Array<double,Dynamic,Dynamic>, int, bool);
 ArrayXXd read_array(string);
 
 
-int main(){
-	ArrayXXd data = read_array("5_6");
-    median_polish(data, 0.01, 10);
+int main(int argc, char** argv){
+    if (argc < 2){
+        cout << "Example use of this program:" << endl;
+        cout << "\t To calculate median polish on matrix stored in data/xyz:" << endl << endl;
+        cout << "\t" << argv[0] << " 100_100 " << endl << endl;
+        cout << "\t To read matrix stored in data/xyz but not calculate the median polish:" << endl << endl;
+        cout << "\t" << argv[0] << " 100_100 0" << endl << endl;
+    } else{
+        ArrayXXd data = read_array(argv[1]);
+        if (argc < 3){
+            median_polish(data, 0.01, 10);
+        }
+    }
     return(0);
 }
 
