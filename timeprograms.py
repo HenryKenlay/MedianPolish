@@ -4,7 +4,6 @@ import numpy as np
 import matplotlib.pyplot as plt 
 
 def time_program(n,m, C = True, repeats = 100):
-    data_file = '{}_{}'.format(n, m)
     if C:
         program = ["./median_polish.out",]
     else:
@@ -13,12 +12,13 @@ def time_program(n,m, C = True, repeats = 100):
     read_timings = []
     for _ in range(repeats):
         start = time()
-        call(program + [data_file])
+        call(program + [str(n), str(m)])
         prog_timings.append(time() - start)
         start = time()
-        call(program + [data_file, "0"])
+        call(program + [str(n), str(m), "0"])
         read_timings.append(time() - start)
     return np.mean(prog_timings), np.mean(read_timings)
+
 
 C_prog = []
 C_read = []
@@ -38,8 +38,6 @@ R_prog = np.asarray(R_prog)
 R_read = np.asarray(R_read)
 
 plt.plot(C_prog, 'r--')
-plt.plot(C_read, 'r:')
-plt.plot(C_prog - C_read, 'r')
 plt.plot(R_prog, 'b--')
+plt.plot(C_read, 'r:')
 plt.plot(R_read, 'b:')
-plt.plot(R_prog - R_read, 'b')
