@@ -5,9 +5,9 @@
 using namespace std;
 using namespace Eigen;
 
-void median_polish(ArrayXXd, double, int, bool);
-ArrayXd median_of_each_row(ArrayXXd m);
-ArrayXd median_of_each_col(ArrayXXd m);
+void median_polish(ArrayXXd&, double, int, bool);
+ArrayXd median_of_each_row(ArrayXXd& m);
+ArrayXd median_of_each_col(ArrayXXd& m);
 double median(ArrayXXd&, int, bool);
 double median_vec(ArrayXd& m);
 ArrayXXd read_array(string);
@@ -23,7 +23,7 @@ int main(int argc, char** argv){
     return(0);
 }
 
-void median_polish(ArrayXXd z, double eps, int maxiter, bool verbose){
+void median_polish(ArrayXXd& z, double eps, int maxiter, bool verbose){
     int nr = z.rows();
     int nc = z.cols();
     double t = 0.0;
@@ -75,7 +75,7 @@ void median_polish(ArrayXXd z, double eps, int maxiter, bool verbose){
 } 
 
 
-ArrayXd median_of_each_row(ArrayXXd m){
+ArrayXd median_of_each_row(ArrayXXd& m){
     int nr = m.rows();
     ArrayXd r = ArrayXd::Zero(nr);
     for(int i = 0; i < nr; i++){
@@ -84,7 +84,7 @@ ArrayXd median_of_each_row(ArrayXXd m){
     return r;
 }
 
-ArrayXd median_of_each_col(ArrayXXd m){
+ArrayXd median_of_each_col(ArrayXXd& m){
     int nc = m.cols();
     ArrayXd c = ArrayXd::Zero(nc);
     for(int i = 0; i < nc; i++){
