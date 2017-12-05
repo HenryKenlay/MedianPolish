@@ -3,9 +3,9 @@ from time import time
 import numpy as np
 import matplotlib.pyplot as plt 
 
-def time_program(n,m, C = True, repeats = 100):
-    if C:
-        program = ["./median_polish2.out",]
+def time_program(n,m, prog = "R", repeats = 100, return_means = True):
+    if prog != "R":
+        program = ["./{}".format(prog),]
     else:
         program = ["/usr/local/bin/Rscript", "median_polish.R"]
     prog_timings = []
@@ -17,30 +17,13 @@ def time_program(n,m, C = True, repeats = 100):
         start = time()
         call(program + [str(n), str(m), "0"])
         read_timings.append(time() - start)
-    return np.mean(prog_timings), np.mean(read_timings)
+    if return_means:
+        return np.mean(prog_timings), np.mean(read_timings)
+    else:
+        return prog_timings, read_timings
 
-
-C_prog = []
-C_read = []
-R_prog = []
-R_read = []
-for i in np.arange(100, 1100, 100):
-    a, b = time_program(i, i, True, 1)
-    C_prog.append(a)
-    C_read.append(b)
-    a, b = time_program(i, i, False, 1)
-    R_prog.append(a)
-    R_read.append(b)
-    print(i)
-    
-C_prog = np.asarray(C_prog)
-C_read = np.asarray(C_read)
-R_prog = np.asarray(R_prog)
-R_read = np.asarray(R_read)
-
-#plt.plot(C_prog, 'r--')
-#plt.plot(C_read, 'r:')
-#plt.plot(R_prog, 'b--')
-#plt.plot(R_read, 'b:')
-plt.plot(C_prog - C_read, 'r')
-plt.plot(R_prog - R_read, 'b')
+#print(time_program(1000,1000, repeats = 5))
+for i in np.arange(100, 1100, 100):    
+    _, v2_time = time_program(i,i, './median_polish-v2.out', 20, False)
+    _, v3_time = time_program(i,i, './median_polish-v3.out', 20, False)
+    print(mannwhitneyu(np.asarray(v2_time), np.asarray(v3_time), alternative = 'greater'))
