@@ -8,7 +8,8 @@ using namespace Eigen;
 void median_polish(ArrayXXd, double, int, bool);
 ArrayXd median_of_each_row(ArrayXXd m);
 ArrayXd median_of_each_col(ArrayXXd m);
-double median(ArrayXXd, int, bool);
+double median(ArrayXXd&, int, bool);
+double median_vec(ArrayXd& m);
 ArrayXXd read_array(string);
 
 
@@ -17,11 +18,10 @@ int main(int argc, char** argv){
     string m = argv[2];
     ArrayXXd data = read_array(n + "_" + m);
     if (argc < 4){
-        median_polish(data, 0.01, 10, false);
+        median_polish(data, 0.01, 10, true);
     }
     return(0);
 }
-
 
 void median_polish(ArrayXXd z, double eps, int maxiter, bool verbose){
     int nr = z.rows();
@@ -42,7 +42,7 @@ void median_polish(ArrayXXd z, double eps, int maxiter, bool verbose){
             z.col(j) = z.col(j) - rdelta;
         }
         r = r + rdelta;
-        delta = median(c, 0, false);
+        delta = median_vec(c);
         c = c - delta;
         t = t + delta;
         cdelta = median_of_each_col(z);
@@ -50,7 +50,7 @@ void median_polish(ArrayXXd z, double eps, int maxiter, bool verbose){
             z.row(j) = z.row(j) - cdelta.transpose();
         }
         c = c + cdelta;
-        delta = median(r, 0, false);
+        delta = median_vec(r);
         r = r - delta;
         t = t + delta;
         newsum = z.abs().sum();
@@ -72,7 +72,7 @@ void median_polish(ArrayXXd z, double eps, int maxiter, bool verbose){
         cerr << "Median polish did not converge in " << maxiter << " iterations" << endl;
     }
     return;
-}
+} 
 
 
 ArrayXd median_of_each_row(ArrayXXd m){
@@ -91,16 +91,30 @@ ArrayXd median_of_each_col(ArrayXXd m){
         c(i) = median(m, i, false);
     }
     return c;
-}
+} 
 
-double median(ArrayXXd m, int index, bool isRow){
+double median(ArrayXXd& m, int index, bool isRow){
 	int size;
-	double mCopy[size];
 	isRow ? size = m.cols() : size = m.rows();
+	double mCopy[size];
 	for(int i = 0; i < size; i++){
 		isRow ? mCopy[i] = m(index, i) : mCopy[i] = m(i, index); 
 	}
 
+	partial_sort(mCopy, &mCopy[1+size/2], &mCopy[size]);
+	if (size%2 == 0){
+		return 0.5*(mCopy[size/2] + mCopy[size/2 - 1]);
+	} else{
+		return mCopy[(size-1)/2];
+	}
+}
+
+double median_vec(ArrayXd& m){
+	int size = m.size();
+	double mCopy[size];
+	for(int i = 0; i < size; i++){
+		mCopy[i] = m(i);
+	}
 	partial_sort(mCopy, &mCopy[1+size/2], &mCopy[size]);
 	if (size%2 == 0){
 		return 0.5*(mCopy[size/2] + mCopy[size/2 - 1]);

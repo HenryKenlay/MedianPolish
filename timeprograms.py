@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 
 def time_program(n,m, C = True, repeats = 100):
     if C:
-        program = ["./median_polish.out",]
+        program = ["./median_polish2.out",]
     else:
         program = ["/usr/local/bin/Rscript", "median_polish.R"]
     prog_timings = []
@@ -25,19 +25,22 @@ C_read = []
 R_prog = []
 R_read = []
 for i in np.arange(100, 1100, 100):
-    a, b = time_program(i, i, True, 10)
+    a, b = time_program(i, i, True, 1)
     C_prog.append(a)
     C_read.append(b)
-    a, b = time_program(i, i, False, 10)
+    a, b = time_program(i, i, False, 1)
     R_prog.append(a)
     R_read.append(b)
+    print(i)
     
 C_prog = np.asarray(C_prog)
 C_read = np.asarray(C_read)
 R_prog = np.asarray(R_prog)
 R_read = np.asarray(R_read)
 
-plt.plot(C_prog, 'r--')
-plt.plot(R_prog, 'b--')
-plt.plot(C_read, 'r:')
-plt.plot(R_read, 'b:')
+#plt.plot(C_prog, 'r--')
+#plt.plot(C_read, 'r:')
+#plt.plot(R_prog, 'b--')
+#plt.plot(R_read, 'b:')
+plt.plot(C_prog - C_read, 'r')
+plt.plot(R_prog - R_read, 'b')
