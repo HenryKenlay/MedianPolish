@@ -10,15 +10,16 @@ ArrayXd median_of_each_row(ArrayXXd& m);
 ArrayXd median_of_each_col(ArrayXXd& m);
 double median(ArrayXXd&, int, bool);
 double median_vec(ArrayXd& m);
-ArrayXXd read_array(string);
+void read_array(ArrayXXd&, string);
 
 
 int main(int argc, char** argv){
     string n = argv[1];
     string m = argv[2];
-    ArrayXXd data = read_array(n + "_" + m);
+    ArrayXXd data = ArrayXXd::Zero(stoi(n), stoi(m));
+    read_array(data, n + "_" + m);
     if (argc < 4){
-        median_polish(data, 0.01, 10, true);
+        median_polish(data, 0.01, 10, false);
     }
     return(0);
 }
@@ -123,10 +124,7 @@ double median_vec(ArrayXd& m){
 	}
 }
 
-ArrayXXd read_array(string fname){
-	int n = stoi(fname.substr(0, fname.find("_")));
-	int m = stoi(fname.substr(fname.find("_")+1));
-	ArrayXXd data = ArrayXXd::Zero(n, m);
+void read_array(ArrayXXd& data, string fname){
 	ifstream fs("data/" + fname);
 	string line;
 	int row = 0;
@@ -142,6 +140,6 @@ ArrayXXd read_array(string fname){
         row++;
     }
     fs.close();
-    return data;
+    return;
 }
 
