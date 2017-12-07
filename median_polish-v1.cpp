@@ -95,8 +95,8 @@ ArrayXd median_of_each_col(Array<double,Dynamic,Dynamic> m){
 
 double median(Array<double,Dynamic,Dynamic> m, int index, bool isRow){
 	int size;
-	double mCopy[size];
 	isRow ? size = m.cols() : size = m.rows();
+    double mCopy[size];
 	for(int i = 0; i < size; i++){
 		isRow ? mCopy[i] = m(index, i) : mCopy[i] = m(i, index); 
 	}
