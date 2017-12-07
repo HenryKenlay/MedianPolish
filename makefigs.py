@@ -35,5 +35,9 @@ for ax in axs:
     ax.legend(loc = 2)
     ax.set_xlabel('Square matrix dimension size')
     
+axs[0].set_title('Time to read data and run algorithm')
+axs[1].set_title('Time to read data')
+axs[2].set_title('Time to run algorithm')
+
 os.makedirs('figures', exist_ok = True)
 plt.savefig('figures/runtimes.pdf', bbox_inches = 'tight')
