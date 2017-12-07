@@ -23,10 +23,11 @@ for algo, color in zip(algos, colors):
         total_std.append(np.std(subdata['total']))
         
     total, read = np.asarray(total), np.asarray(read)
-    axs[0].errorbar(input_sizes, total, yerr = 1.96*np.asarray(total_std), color = color, label = algo)
-    axs[1].errorbar(input_sizes, read, yerr = 1.96*np.asarray(read_std), color = color, label = algo)
-    std = np.sqrt(np.asarray(total_std)**2 + np.asarray(read_std)**2)
-    axs[2].errorbar(input_sizes, total - read, yerr = 1.96*std, color = color, label = algo)
+    total_std, read_std = np.asarray(total_std), np.asarray(read_std)
+    axs[0].errorbar(input_sizes, total, yerr = total_std, color = color, label = algo)
+    axs[1].errorbar(input_sizes, read, yerr = read_std, color = color, label = algo)
+    std = np.sqrt(total_std**2 + read_std**2)
+    axs[2].errorbar(input_sizes, total - read, yerr = std, color = color, label = algo)
     
 
 plt.tight_layout()
@@ -34,6 +35,7 @@ axs[0].set_ylabel('Time (s)')
 for ax in axs:
     ax.legend(loc = 2)
     ax.set_xlabel('Square matrix dimension size')
+    ax.set_ylim([0, 6.5])
     
 axs[0].set_title('Time to read data and run algorithm')
 axs[1].set_title('Time to read data')

@@ -39,6 +39,6 @@ if __name__ == '__main__':
     os.makedirs('results', exist_ok=True)
     repeats = 30
     benchmark('R', repeats, True)
-    benchmark('median_polish-v1', repeats, True)
-    benchmark('median_polish-v2', repeats, True)
-    benchmark('median_polish-v3', repeats, True)
+    #benchmark('median_polish-v1', repeats, True)
+    #benchmark('median_polish-v2', repeats, True)
+    #benchmark('median_polish-v3', repeats, True)
