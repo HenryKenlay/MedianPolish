@@ -6,7 +6,7 @@ I did these experiments on a mac. The compiler that comes with Xcode doesn't hav
 `brew install gcc --without-multilib`
 
 The C++ scripts are then compiled with the following (where x is replaced with 1, 2 or 3)
-`/usr/local/Cellar/gcc/7.2.0/bin/g++-7 median_polish-vx.cpp -o median_polish-vx.out -fopenmp`
+`/usr/local/Cellar/gcc/7.2.0/bin/g++-7 median_polish/median_polish-vx.cpp -o median_polish/median_polish-vx.out -fopenmp`
 
 # Recreating results 
 After compiling the C++ code. Generate the test data with the command
