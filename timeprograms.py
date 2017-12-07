@@ -2,6 +2,7 @@ from subprocess import call
 from time import time
 import numpy as np
 import pandas as pd
+import os
 
 def benchmark(prog, repeats, save = False):
     dfs = []
@@ -17,9 +18,9 @@ def benchmark(prog, repeats, save = False):
 
 def time_program(n,m, prog = 'R', repeats = 100, return_means = True):
     if prog != 'R':
-        program = ['./{}.out'.format(prog),]
+        program = ['./median_polish/{}.out'.format(prog),]
     else:
-        program = ['/usr/local/bin/Rscript', 'median_polish.R']
+        program = ['/usr/local/bin/Rscript', 'median_polish/median_polish.R']
     prog_timings = []
     read_timings = []
     for _ in range(repeats):
@@ -35,6 +36,7 @@ def time_program(n,m, prog = 'R', repeats = 100, return_means = True):
         return prog_timings, read_timings
 
 if __name__ == '__main__':
+    os.makedirs('results', exists_ok=True)
     repeats = 30
     benchmark('R', repeats, True)
     benchmark('median_polish-v1', repeats, True)
