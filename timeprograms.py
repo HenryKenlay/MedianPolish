@@ -36,7 +36,7 @@ def time_program(n,m, prog = 'R', repeats = 100, return_means = True):
         return prog_timings, read_timings
 
 if __name__ == '__main__':
-    os.makedirs('results', exists_ok=True)
+    os.makedirs('results', exist_ok=True)
     repeats = 30
     benchmark('R', repeats, True)
     benchmark('median_polish-v1', repeats, True)
