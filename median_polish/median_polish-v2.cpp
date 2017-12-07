@@ -19,7 +19,7 @@ int main(int argc, char** argv){
     ArrayXXd data = ArrayXXd::Zero(stoi(n), stoi(m));
     read_array(data, n + "_" + m);
     if (argc < 4){
-        median_polish(data, 0.01, 10, true);
+        median_polish(data, 0.01, 10, false);
     }
     return(0);
 }

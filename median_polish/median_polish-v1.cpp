@@ -17,7 +17,7 @@ int main(int argc, char** argv){
     string m = argv[2];
     ArrayXXd data = read_array(n + "_" + m);
     if (argc < 4){
-        median_polish(data, 0.01, 10, true);
+        median_polish(data, 0.01, 10, false);
     }
     return(0);
 }
