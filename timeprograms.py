@@ -35,7 +35,8 @@ def time_program(n,m, prog = 'R', repeats = 100, return_means = True):
         return prog_timings, read_timings
 
 if __name__ == '__main__':
-    benchmark('R', 100, True)
-    benchmark('median_polish-v1', 100, True)
-    benchmark('median_polish-v2', 100, True)
-    benchmark('median_polish-v3', 100, True)
+    repeats = 30
+    benchmark('R', repeats, True)
+    benchmark('median_polish-v1', repeats, True)
+    benchmark('median_polish-v2', repeats, True)
+    benchmark('median_polish-v3', repeats, True)
